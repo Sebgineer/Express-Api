@@ -31,14 +31,9 @@ app.post('/create_diktator', function (req, res) {
         deathdate: req.query.deathdate,
     };
 
-    let rawdata = fs.readFileSync(path);
-    let data = JSON.parse(rawdata);
-    let count = data["Count"];
-    let Diktator = data["Diktator"];
-
-    // console.log(Diktator);
-    
     if (cd_reponses.name && cd_reponses.birthdate && cd_reponses.deathdate) {
+        let rawdata = fs.readFileSync(path);
+        let data = JSON.parse(rawdata);
         console.log(Diktator[count.toString()]);
         data["Count"]++;
         data["Diktator"][data["Count"].toString()] = cd_reponses;
@@ -49,14 +44,33 @@ app.post('/create_diktator', function (req, res) {
         console.log("%s", cd_reponses.name);
         res.end('The Required data is not set');
     }
- });
+});
 
 app.get('/list_diktator', function (req, res) {
     let rawdata = fs.readFileSync(path);
     let data = JSON.parse(rawdata);
     console.log("Got a GET request for /list_diktator");
     res.send(JSON.stringify(data["Diktator"]));
- });
+});
+
+app.delete('/delete_diktator', function (req, res) {
+    id = req.query.ids;
+
+    if (id) {
+        let rawdata = fs.readFileSync(path);
+        let data = JSON.parse(rawdata);
+
+        console.log(data["Diktator"][id.toString()]);
+        delete data["Diktator"][id.toString()];
+        fs.writeFileSync(path, JSON.stringify(data));
+        res.end('Deleted ' + id);
+    }
+    else {
+        res.end('The Required data is not set');
+    }
+
+
+})
 
 var server = app.listen(port, function () {
     console.log("Up and running");
