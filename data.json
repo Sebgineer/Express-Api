@@ -1,9 +1,20 @@
 {
-    "Diktator": {
-        "0": {
-            "name": "hitler",
-            "birthdate": "12-12-1918",
-            "deathdate": "21-7-1945"
+    "Count":2,
+    "Diktator":{
+        "0":{
+            "name":"hitler",
+            "birthdate":"12-12-1918",
+            "deathdate":"21-7-1945"
+        },
+        "1":{
+            "name":"mand",
+            "birthdate":"12",
+            "deathdate":"14"
+        },
+        "2":{
+            "name":"mand",
+            "birthdate":"12",
+            "deathdate":"14"
         }
     }
 }

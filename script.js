@@ -4,6 +4,7 @@ var fs = require('fs');
 const { response } = require('express');
 var app = express();
 var port = 3000;
+const path = 'data.json';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,12 +31,19 @@ app.post('/create_diktator', function (req, res) {
         deathdate: req.query.deathdate,
     };
 
-    let rawdata = fs.readFileSync('data.json');
-    let data = JSON.parse(rawdata)["Diktator"];
-    console.log(Object.keys(data).length);
+    let rawdata = fs.readFileSync(path);
+    let data = JSON.parse(rawdata);
+    let count = data["Count"];
+    let Diktator = data["Diktator"];
 
+    // console.log(Diktator);
+    
     if (cd_reponses.name && cd_reponses.birthdate && cd_reponses.deathdate) {
-        res.send('true');
+        console.log(Diktator[count.toString()]);
+        data["Count"]++;
+        data["Diktator"][data["Count"].toString()] = cd_reponses;
+        fs.writeFileSync(path, JSON.stringify(data));
+        res.end(JSON.stringify(cd_reponses));
     }
     else{
         console.log("%s", cd_reponses.name);
@@ -44,7 +52,7 @@ app.post('/create_diktator', function (req, res) {
  });
 
 app.get('/list_diktator', function (req, res) {
-    let rawdata = fs.readFileSync('data.json');
+    let rawdata = fs.readFileSync(path);
     let data = JSON.parse(rawdata);
     console.log("Got a GET request for /list_diktator");
     res.send(JSON.stringify(data["Diktator"]));
